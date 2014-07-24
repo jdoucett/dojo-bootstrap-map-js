@@ -34,3 +34,11 @@ table {
   top: 65px;
   right: 60px;
 }
+
+.navbar-inverse {
+  background-color: #003366;
+}
+
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus {
+  background-color: #0B2859;
+}
