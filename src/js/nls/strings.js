@@ -1,6 +1,9 @@
 define({
     root: ({
         appTitle: 'Lake Michigan Fish Catch',
+        navDates: 'Date Range',
+        navFish: 'Fish',
+        navCPUE: 'Summary Type',
         navBasemaps: 'Basemaps',
         navAbout: 'About',
         modalAboutTitle: 'About',
