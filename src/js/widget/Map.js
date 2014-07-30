@@ -12,13 +12,15 @@ define([
     'esri/dijit/LocateButton',
     'esri/dijit/Geocoder',
     'esri/layers/ImageParameters',
+    'esri/geometry/Extent',
+    'esri/SpatialReference',
 
     'bootstrap-map-js/bootstrapmap',
 
     'dojo/text!./templates/Map.html'
 ], function(declare, array,
     _WidgetBase, _TemplatedMixin,
-    Map, Scalebar, ArcGISDynamicMapServiceLayer, WebTiledLayer, LocateButton, Geocoder, ImageParameters,
+    Map, Scalebar, ArcGISDynamicMapServiceLayer, WebTiledLayer, LocateButton, Geocoder, ImageParameters, Extent, SpatialReference,
     BootstrapMap,
     template) {
     return declare([_WidgetBase, _TemplatedMixin], {
@@ -31,6 +33,7 @@ define([
 
         _initMap: function() {
             this.map = BootstrapMap.create(this.mapNode, this.config.map.options);
+            console.log ('The options are' , this.config.map.options);            
             this.scalebar = new Scalebar({
                 map: this.map,
                 scalebarUnit: 'dual'
