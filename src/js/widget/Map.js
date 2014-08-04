@@ -4,6 +4,7 @@ define([
 
     'dijit/_WidgetBase',
     'dijit/_TemplatedMixin',
+    'dijit/layout/ContentPane',
 
     'esri/map',
     'esri/dijit/Scalebar',
@@ -14,13 +15,14 @@ define([
     'esri/layers/ImageParameters',
     'esri/geometry/Extent',
     'esri/SpatialReference',
+'esri/dijit/Legend',
 
     'bootstrap-map-js/bootstrapmap',
 
     'dojo/text!./templates/Map.html'
 ], function(declare, array,
-    _WidgetBase, _TemplatedMixin,
-    Map, Scalebar, ArcGISDynamicMapServiceLayer, WebTiledLayer, LocateButton, Geocoder, ImageParameters, Extent, SpatialReference,
+    _WidgetBase, _TemplatedMixin, ContentPane,
+    Map, Scalebar, ArcGISDynamicMapServiceLayer, WebTiledLayer, LocateButton, Geocoder, ImageParameters, Extent, SpatialReference, Legend
     BootstrapMap,
     template) {
 
@@ -195,7 +197,6 @@ define([
 
         _initMap: function() {
             this.map = BootstrapMap.create(this.mapNode, this.config.map.options);
-            console.log ('The options are' , this.config.map.options);            
             this.scalebar = new Scalebar({
                 map: this.map,
                 scalebarUnit: 'dual'
@@ -215,6 +216,13 @@ define([
                 "opacity": .90,
                 imageParameters: imageParameters
             });
+
+            //add the legend
+            var legendDijit = new Legend({
+                map: this.map
+            }, 'legendDiv');
+            legendDijit.startup();
+
             var visibleBaseLayerIds = [1, 2, 3, 4, 65];
             decadeCatchBaseLayer.setVisibleLayers(visibleBaseLayerIds);
 
