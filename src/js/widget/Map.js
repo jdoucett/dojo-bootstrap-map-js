@@ -4,6 +4,7 @@ define([
 
     'dijit/_WidgetBase',
     'dijit/_TemplatedMixin',
+    'dijit/layout/ContentPane',
 
     'esri/map',
     'esri/dijit/Scalebar',
@@ -12,13 +13,14 @@ define([
     'esri/dijit/LocateButton',
     'esri/dijit/Geocoder',
     'esri/layers/ImageParameters',
+    'esri/dijit/Legend',
 
     'bootstrap-map-js/bootstrapmap',
 
     'dojo/text!./templates/Map.html'
 ], function(declare, array,
-    _WidgetBase, _TemplatedMixin,
-    Map, Scalebar, ArcGISDynamicMapServiceLayer, WebTiledLayer, LocateButton, Geocoder, ImageParameters,
+    _WidgetBase, _TemplatedMixin, ContentPane,
+    Map, Scalebar, ArcGISDynamicMapServiceLayer, WebTiledLayer, LocateButton, Geocoder, ImageParameters, Legend,
     BootstrapMap,
     template) {
 
@@ -211,7 +213,15 @@ define([
                 "opacity": .90,
                 imageParameters: imageParameters
             });
+
             this.map.addLayer(decadeCatchBaseLayer);
+
+            //add the legend
+            var legendDijit = new Legend({
+                map: this.map
+            }, 'legendDiv');
+            legendDijit.startup();
+
             var visibleBaseLayerIds = [1, 2, 3, 4, 65];
             decadeCatchBaseLayer.setVisibleLayers(visibleBaseLayerIds);
 

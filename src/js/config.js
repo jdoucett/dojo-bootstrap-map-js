@@ -9,6 +9,9 @@ define([], function() {
             // TODO: add basemaps
             basemaps: {}
         },
+        legend: {
+            moreInfoUrl: 'https://github.com/Esri/dojo-bootstrap-map-js'
+        },
         about: {
             moreInfoUrl: 'https://github.com/Esri/dojo-bootstrap-map-js'
         }
