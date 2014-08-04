@@ -1,6 +1,7 @@
 define([
     'dojo/_base/declare',
     'dojo/_base/array',
+    'dojo/dom',
 
     'dijit/_WidgetBase',
     'dijit/_TemplatedMixin',
@@ -15,21 +16,19 @@ define([
     'esri/layers/ImageParameters',
     'esri/geometry/Extent',
     'esri/SpatialReference',
-'esri/dijit/Legend',
+    'esri/dijit/Legend',
 
     'bootstrap-map-js/bootstrapmap',
 
     'dojo/text!./templates/Map.html'
-], function(declare, array,
+], function(declare, array, dom,
     _WidgetBase, _TemplatedMixin, ContentPane,
-    Map, Scalebar, ArcGISDynamicMapServiceLayer, WebTiledLayer, LocateButton, Geocoder, ImageParameters, Extent, SpatialReference, Legend
+    Map, Scalebar, ArcGISDynamicMapServiceLayer, WebTiledLayer, LocateButton, Geocoder, ImageParameters, Extent, SpatialReference, Legend,
     BootstrapMap,
     template) {
 
-    //Set default values for drop down lists
-    var dateText = '1993 - 2002';
-    var fishText = 'Rainbow Trout';
-    var summaryText = 'Catch per Trip';
+    //Default values for drop down lists defined in app.js
+
 
     var imageParameters = new ImageParameters();
     imageParameters.format = "PNG24"; //set the image type to PNG24, note default is PNG8.            
@@ -49,9 +48,9 @@ define([
         },
 
         setFishmap: function(dateText, fishText, summaryText) {
+            console.log ('ran setFishmap' + dateText + ' , ' + fishText + ' , ' + summaryText);
             var map = this.map;
             var l, options;
-            // this.clearFishMap();
             if (dateText == '1993 - 2002') {
                 if (fishText == 'Rainbow Trout') {
                     if (summaryText == 'Catch per Trip') {
@@ -217,12 +216,6 @@ define([
                 imageParameters: imageParameters
             });
 
-            //add the legend
-            var legendDijit = new Legend({
-                map: this.map
-            }, 'legendDiv');
-            legendDijit.startup();
-
             var visibleBaseLayerIds = [1, 2, 3, 4, 65];
             decadeCatchBaseLayer.setVisibleLayers(visibleBaseLayerIds);
 
@@ -233,6 +226,13 @@ define([
 
             //Set first fish map to display on load
             var Fishmap = this.setFishmap(dateText, fishText, summaryText);
+
+            //add the legend
+            var legendDijit = new Legend({
+                map: this.map
+            }, 'legendDiv');
+            legendDijit.startup();
+
         },
 
         clearBaseMap: function() {

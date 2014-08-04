@@ -23,6 +23,28 @@ define([
 
         _attachEventHandlers: function() {
             var _this = this;
+            // change fish map
+            query('.year-list li', this.domNode).on(touch.press, function(e) {
+                e.preventDefault();
+                topic.publish('year/set', {
+                    year: e.target.text
+                });
+                _this._hideDropdownNav(e);
+            });
+            query('.fish-list li', this.domNode).on(touch.press, function(e) {
+                e.preventDefault();
+                topic.publish('fish/set', {
+                    fish: e.target.text
+                });
+                _this._hideDropdownNav(e);
+            });
+                query('.summary-list li', this.domNode).on(touch.press, function(e) {
+                e.preventDefault();
+                topic.publish('summary/set', {
+                    summary: e.target.text
+                });
+                _this._hideDropdownNav(e);
+            });
             // change basemap
             query('.basemap-list li', this.domNode).on(touch.press, function(e) {
                 e.preventDefault();

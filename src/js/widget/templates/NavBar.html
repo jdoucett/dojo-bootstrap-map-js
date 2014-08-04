@@ -12,7 +12,7 @@
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
             <li class="active dropdown year-list">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">${strings.navDates} <b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="dateTextLabel"></a>
             <!-- TODO: build this dynamically from config -->
             <ul class="dropdown-menu">
               <li><a href="#">1993 - 2002</a></li>
@@ -20,7 +20,7 @@
               </ul>
           </li>
           <li class="active dropdown fish-list">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">${strings.navFish} <b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="fishTextLabel"></a>
             <!-- TODO: build this dynamically from config -->
             <ul class="dropdown-menu">
               <li><a href="#">Rainbow Trout</a></li>
@@ -30,8 +30,8 @@
               <li><a href="#">Coho Salmon</a></li>    
             </ul>
           </li>
-          <li class="active dropdown cpue-list">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">${strings.navCPUE} <b class="caret"></b></a>
+          <li class="active dropdown summary-list">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="summaryTextLabel"></a>
             <!-- TODO: build this dynamically from config -->
             <ul class="dropdown-menu">
               <li><a href="#">Catch per Trip</a></li>
