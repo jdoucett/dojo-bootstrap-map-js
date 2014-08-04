@@ -24,6 +24,7 @@ define([
     BootstrapMap,
     template) {
 
+    //Set default values for drop down lists
     var dateText = '1993 - 2002';
     var fishText = 'Rainbow Trout';
     var summaryText = 'Catch per Trip';
@@ -214,13 +215,14 @@ define([
                 "opacity": .90,
                 imageParameters: imageParameters
             });
-            this.map.addLayer(decadeCatchBaseLayer);
             var visibleBaseLayerIds = [1, 2, 3, 4, 65];
             decadeCatchBaseLayer.setVisibleLayers(visibleBaseLayerIds);
 
             // decadeCatchDataLayer defined as global for use in this function and setFishMap function
 
             this.map.addLayer(decadeCatchDataLayer);
+            this.map.addLayer(decadeCatchBaseLayer);
+
             //Set first fish map to display on load
             var Fishmap = this.setFishmap(dateText, fishText, summaryText);
         },
@@ -236,25 +238,6 @@ define([
                 map.removeLayer(map.getLayer(map.layerIds[0]));
             }
         },
-
-        // updateLayerVisibility: function  () {
-        //     var inputs = query(".list_item");
-        //     // var inputCount = inputs.length;
-        //     // //in this application layer 2 is always on.
-        //     // visibleLayerIds = [2];
-
-        //     // for (var i = 0; i < inputCount; i++) {
-        //     //   if (inputs[i].checked) {
-        //     //     visibleLayerIds.push(inputs[i].value);
-        //     //   }
-        //     // }
-
-        //     // if (visibleLayerIds.length === 0) {
-        //     //   visibleLayerIds.push(-1);
-        //     // }
-
-        //     layer.setVisibleLayers(visibleLayerIds);
-        //   }
 
         setBasemap: function(basemapText) {
             var map = this.map;
