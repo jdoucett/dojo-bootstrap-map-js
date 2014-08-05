@@ -42,17 +42,17 @@ function(
   });
   topic.subscribe('year/set', function(args) {
     dateText = args.year;
-    map.setFishmap(dateText, fishText, summaryText);
+    map.updateFishmap(dateText, fishText, summaryText);
     dom.byId("dateTextLabel").innerHTML = dateText + '<b class="caret"></b>';        
   });
   topic.subscribe('fish/set', function(args) {
     fishText = args.fish;    
-    map.setFishmap(dateText, fishText, summaryText);
+    map.updateFishmap(dateText, fishText, summaryText);
     dom.byId("fishTextLabel").innerHTML = fishText + '<b class="caret"></b>';    
   });
   topic.subscribe('summary/set', function(args) {
     summaryText = args.summary;
-    map.setFishmap(dateText, fishText, summaryText);
+    map.updateFishmap(dateText, fishText, summaryText);
     dom.byId("summaryTextLabel").innerHTML = summaryText + '<b class="caret"></b>';            
   });  
   // set page title
