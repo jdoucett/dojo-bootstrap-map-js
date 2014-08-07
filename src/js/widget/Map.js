@@ -17,13 +17,15 @@ define([
     'esri/geometry/Extent',
     'esri/SpatialReference',
     'esri/dijit/Legend',
+    'esri/dijit/TimeSlider',
+    'esri/TimeExtent',
 
     'bootstrap-map-js/bootstrapmap',
 
     'dojo/text!./templates/Map.html'
 ], function(declare, array, dom,
     _WidgetBase, _TemplatedMixin, ContentPane,
-    Map, Scalebar, ArcGISDynamicMapServiceLayer, WebTiledLayer, LocateButton, Geocoder, ImageParameters, Extent, SpatialReference, Legend,
+    Map, Scalebar, ArcGISDynamicMapServiceLayer, WebTiledLayer, LocateButton, Geocoder, ImageParameters, Extent, SpatialReference, Legend, TimeSlider, TimeExtent,
     BootstrapMap,
     template) {
 
@@ -50,30 +52,60 @@ define([
         },
 
 
-        legendCreate: function() {//add the legend
-            console.log ('initializing map');
+        legendCreate: function() { //add the legend
+            console.log('initializing map');
             legendDijit = new Legend({
                 map: this.map,
-                layerInfos: [
-                {
-                  layer:decadeCatchDataLayer, title:"Fish Catch"
-                }
-              ]                
+                layerInfos: [{
+                    layer: decadeCatchDataLayer,
+                    title: "Fish Catch"
+                }]
             }, 'legendDiv');
             legendDijit.startup();
         },
 
         legendRefresh: function() {
-            dom.byId("legendDiv").innerHTML = '';                    
-            legendDijit.refresh([
-                {
-                  layer:decadeCatchDataLayer, title:"Fish Catch"
+            dom.byId("legendDiv").innerHTML = '';
+            legendDijit.refresh([{
+                layer: decadeCatchDataLayer,
+                title: "Fish Catch"
+            }]);
+        },
+
+        initSlider: function() {
+            console.log('Initializaing time slider');
+            var timeSlider = new TimeSlider({
+                style: "width: 100%;"
+            }, dom.byId("timeSliderDiv"));
+            this.map.setTimeSlider(timeSlider);
+
+            var layerTimeExtent = results[2].layer.timeInfo.timeExtent;
+            timeSlider.setThumbCount(2);
+            timeSlider.createTimeStopsByTimeInterval(layerTimeExtent, 2, "esriTimeUnitsYears");
+            timeSlider.setThumbIndexes([0, 1]);
+            timeSlider.setThumbMovingRate(2000);
+            timeSlider.startup();
+
+            //add labels for every other time stop
+            var labels = array.map(timeSlider.timeStops, function(timeStop, i) {
+                if (i % 2 === 0) {
+                    return timeStop.getUTCFullYear();
+                } else {
+                    return "";
                 }
-              ] );
+            });
+
+            timeSlider.setLabels(labels);
+
+            timeSlider.on("time-extent-change", function(evt) {
+                var startValString = evt.startTime.getUTCFullYear();
+                var endValString = evt.endTime.getUTCFullYear();
+                dom.byId("daterange").innerHTML = "<i>" + startValString + " and " + endValString + "<\/i>";
+            });
         },
 
         setFishmap: function(dateText, fishText, summaryText) {
-            console.log ('ran setFishmap' + dateText + ' , ' + fishText + ' , ' + summaryText);
+            console.log('ran setFishmap' + dateText + ' , ' + fishText + ' , ' + summaryText);
             var map = this.map;
             var l, options;
             if (dateText == '1993 - 2002') {
@@ -249,6 +281,8 @@ define([
             this.map.addLayer(decadeCatchDataLayer);
             this.map.addLayer(decadeCatchBaseLayer);
             this.legendCreate();
+            // this.initSlider();
+
         },
 
         updateFishmap: function(dateText, fishText, summaryText) {

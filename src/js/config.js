@@ -1,8 +1,16 @@
 define([
     // Need to delcare Extent here for Firefox to work
     'esri/geometry/Extent',
-    ], function(Extent) {
-    var extent = new esri.geometry.Extent({'xmin':-9813000,'ymin':4920000,'xmax':-9350000,'ymax':5950000,'spatialReference':{'wkid':102100}});
+], function(Extent) {
+    var extent = new esri.geometry.Extent({
+        'xmin': -9813000,
+        'ymin': 4920000,
+        'xmax': -9350000,
+        'ymax': 5950000,
+        'spatialReference': {
+            'wkid': 102100
+        }
+    });
     return {
         map: {
             options: {
@@ -16,7 +24,7 @@ define([
             moreInfoUrl: 'https://github.com/Esri/dojo-bootstrap-map-js'
         },
         about: {
-            moreInfoUrl: 'https://github.com/Esri/dojo-bootstrap-map-js'
+            moreInfoUrl: 'http://www.iisgcp.org'
         }
     };
 });
