@@ -22,22 +22,25 @@ define([
 
     'bootstrap-map-js/bootstrapmap',
 
-    'dojo/text!./templates/Map.html'
+    'dojo/text!./templates/Map.html',
+    'dojo/dom-construct'
 ], function(declare, array, dom,
     _WidgetBase, _TemplatedMixin, ContentPane,
     Map, Scalebar, ArcGISDynamicMapServiceLayer, WebTiledLayer, LocateButton, Geocoder, ImageParameters, Extent, SpatialReference, Legend, TimeSlider, TimeExtent,
     BootstrapMap,
-    template) {
+    template,domConstruct) {
 
     //Default values for drop down lists defined in app.js
 
     var legendDijit;
+    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];    
+    var timeYear = "1992";
     var imageParameters = new ImageParameters();
     imageParameters.format = "PNG24"; //set the image type to PNG24, note default is PNG8.            
 
     //Defines dynamic layer for showing fish data.  Used in setFishmap and _initMap functions
-    var decadeCatchDataLayer = new ArcGISDynamicMapServiceLayer("http://prodgis2.agriculture.purdue.edu/arcgis/rest/services/IISGLakeMI/Decade_Catch_Data_LakeMI/MapServer", {
-        "opacity": .90,
+    var decadeCatchDataLayer = new ArcGISDynamicMapServiceLayer('http://prodgis2.agriculture.purdue.edu/arcgis/rest/services/IISGLakeMI/Decade_Catch_Data_LakeMI/MapServer', {
+        'opacity': .90,
         imageParameters: imageParameters
     });
     var visibleDataLayerIds = [11];
@@ -58,50 +61,49 @@ define([
                 map: this.map,
                 layerInfos: [{
                     layer: decadeCatchDataLayer,
-                    title: "Fish Catch"
+                    title: 'Fish Catch'
                 }]
             }, 'legendDiv');
             legendDijit.startup();
         },
 
         legendRefresh: function() {
-            dom.byId("legendDiv").innerHTML = '';
+            dom.byId('legendDiv').innerHTML = '';
             legendDijit.refresh([{
                 layer: decadeCatchDataLayer,
-                title: "Fish Catch"
+                title: 'Fish Catch'
             }]);
         },
 
         initSlider: function() {
             console.log('Initializaing time slider');
+            
+            if (dijit.byId('timeSlider')) {
+              dijit.byId('timeSlider').destroy();
+            }
+            var tsDiv = dojo.create("div", null, dojo.byId('timeSliderDiv'));
+                      
             var timeSlider = new TimeSlider({
-                style: "width: 100%;"
-            }, dom.byId("timeSliderDiv"));
+                style: 'width: 100%;',
+                id:'timeSlider'
+            }, dom.byId(tsDiv));
             this.map.setTimeSlider(timeSlider);
 
-            var layerTimeExtent = results[2].layer.timeInfo.timeExtent;
-            timeSlider.setThumbCount(2);
-            timeSlider.createTimeStopsByTimeInterval(layerTimeExtent, 2, "esriTimeUnitsYears");
-            timeSlider.setThumbIndexes([0, 1]);
-            timeSlider.setThumbMovingRate(2000);
-            timeSlider.startup();
+              var timeExtent = new TimeExtent();
+              timeExtent.startTime = new Date('4/31/' + timeYear + ' UTC');
+              timeExtent.endTime = new Date('8/31/' + timeYear + 'UTC');
+              console.log ('End Time ' + timeExtent.endTime);
+              timeSlider.setThumbCount(1);
+              timeSlider.createTimeStopsByTimeInterval(timeExtent, 1, 'esriTimeUnitsMonths');
+              timeSlider.setThumbMovingRate(1500);
+              timeSlider.startup();
 
-            //add labels for every other time stop
-            var labels = array.map(timeSlider.timeStops, function(timeStop, i) {
-                if (i % 2 === 0) {
-                    return timeStop.getUTCFullYear();
-                } else {
-                    return "";
-                }
-            });
+            
+              var labels = dojo.map(timeSlider.timeStops, function(timeStop) {
+                return monthNames[timeStop.getUTCMonth()];
+                });
+              timeSlider.setLabels(labels);
 
-            timeSlider.setLabels(labels);
-
-            timeSlider.on("time-extent-change", function(evt) {
-                var startValString = evt.startTime.getUTCFullYear();
-                var endValString = evt.endTime.getUTCFullYear();
-                dom.byId("daterange").innerHTML = "<i>" + startValString + " and " + endValString + "<\/i>";
-            });
         },
 
         setFishmap: function(dateText, fishText, summaryText) {
@@ -109,6 +111,7 @@ define([
             var map = this.map;
             var l, options;
             if (dateText == '1993 - 2002') {
+                timeYear = '1993';
                 if (fishText == 'Rainbow Trout') {
                     if (summaryText == 'Catch per Trip') {
                         visibleDataLayerIds = [11];
@@ -178,6 +181,7 @@ define([
                     console.log('Decade 93 - 02, no fish match');
                 }
             } else if (dateText == '2003 - 2012') {
+                timeYear = '2003';                
                 if (fishText == 'Rainbow Trout') {
                     if (summaryText == 'Catch per Trip') {
                         visibleDataLayerIds = [10];
@@ -278,17 +282,19 @@ define([
 
             // decadeCatchDataLayer defined as global for use in this function and setFishMap function
 
-            this.map.addLayer(decadeCatchDataLayer);
             this.map.addLayer(decadeCatchBaseLayer);
+            this.map.addLayer(decadeCatchDataLayer);        
             this.legendCreate();
-            // this.initSlider();
+            this.initSlider();
 
         },
 
         updateFishmap: function(dateText, fishText, summaryText) {
             this.setFishmap(dateText, fishText, summaryText);
-            console.log('refreshign legend');
+            console.log('refreshing legend');
             this.legendRefresh();
+            console.log('refreshing time slider');
+            this.initSlider();
         },
 
         clearBaseMap: function() {

@@ -16,6 +16,7 @@ define([
             options: {
                 basemap: 'gray',
                 extent: extent,
+                logo:false,
             },
             // TODO: add basemaps
             basemaps: {}

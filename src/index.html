@@ -11,22 +11,23 @@
     <link rel="shortcut icon" href="./favicon.png">
 
     <title></title>
-
-    <link href="./css/app.css" rel="stylesheet">
-
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script>
       <script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/dojo/dijit/themes/claro/claro.css">
+    <link href="./css/app.css" rel="stylesheet">    
   </head>
   <body>
     <div id="navBarNode"></div>
     <div id="legendDiv" style="height:0; width:0"></div>
     <div id="mapNode"></div>
+    <div id="bottomPanel">
     <div id="timeSliderDiv">
-      <div>Time Slider <span id="daterange">1993 to 2002</span> (Completion date)</div>
+      <!-- <div>Time Slider <span id="daterange">1993 to 2002</span> (Completion date)</div> -->
     </div>
+  </div>
     <script>
     (function() {
       'use strict';
