@@ -43,7 +43,10 @@ table {
   background-color: #0B2859;
 }
 
-.esriScalebar{padding: 20px 20px 80px 20px;}
+.esriScalebar { 
+  padding-bottom: 70px;
+  position: right;
+}
 
 .esriTimeSlider .ts {
   margin: 9px 3px 3px 3px;
@@ -74,6 +77,6 @@ table {
   }
 
   .geocoder {
-/*    width: 50%;
-*/  }
+    width: 50%;
+  }
 }
