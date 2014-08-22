@@ -1,5 +1,6 @@
 @import url("//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css");
 @import url("//js.arcgis.com/3.10/js/esri/css/esri.css");
+@import url("http://js.arcgis.com/3.10/js/dojo/dijit/themes/tundra/tundra.css");
 @import url("../bower_components/bootstrap-map-js/src/css/bootstrapmap.css");
 
 body {
@@ -10,10 +11,10 @@ body > .container {
   padding-bottom: 20px;
 }
 
-table {
+/*table {
   border-collapse: ;
-  border-spacing: ;
-}
+  border-spacing: 0;
+}*/
 
 .starter-template {
   padding: 40px 15px;
@@ -45,9 +46,9 @@ table {
 
 .esriScalebar { 
   padding-bottom: 70px;
-  position: right;
+  right: 10px;
 }
-
+/**/
 .esriTimeSlider .ts {
   margin: 9px 3px 3px 3px;
 }
@@ -62,6 +63,7 @@ table {
   height: 60px;
   color: #fff;
   background-color: rgba(11,40,89,0.8);  
+  z-index: 50;  
 }
 
 #timeSliderDiv {

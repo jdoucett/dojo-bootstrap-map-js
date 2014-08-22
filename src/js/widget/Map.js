@@ -87,15 +87,16 @@ define([
             var timeSlider = new TimeSlider({
                 style: 'width: 100%;',
                 id:'timeSlider'
-            }, dom.byId(tsDiv));
+            }, dom.byId('timeSliderDiv'));
             this.map.setTimeSlider(timeSlider);
 
               var timeExtent = new TimeExtent();
               timeExtent.startTime = new Date('4/31/' + timeYear + ' UTC');
-              timeExtent.endTime = new Date('8/31/' + timeYear + 'UTC');
-              console.log ('Start Time ' + timeExtent.startTime);
-              timeSlider.setThumbCount(1);
-              timeSlider.createTimeStopsByTimeInterval(timeExtent, 1, 'esriTimeUnitsMonths');
+              timeExtent.endTime = new Date('8/31/' + timeYear + ' UTC');
+              timeSlider.setThumbCount(1);              
+              timeSlider.createTimeStopsByTimeInterval(timeExtent,1,'esriTimeUnitsMonths');
+
+
               timeSlider.setThumbMovingRate(1500);
               timeSlider.startup();
 
@@ -104,6 +105,7 @@ define([
                 return monthNames[timeStop.getUTCMonth()];
                 });
               timeSlider.setLabels(labels);
+              console.log('Time slider labeled');
 
         },
 
