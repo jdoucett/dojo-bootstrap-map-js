@@ -87,7 +87,6 @@ define([
             var timeSlider = new TimeSlider({
                 style: 'width: 100%;',
                 id:'timeSlider'
-            }, dom.byId(tsDiv));
             this.map.setTimeSlider(timeSlider);
 
               var timeExtent = new TimeExtent();
