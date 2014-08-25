@@ -50,7 +50,7 @@ body > .container {
 }
 /**/
 .esriTimeSlider .ts {
-  margin: 9px 3px 3px 3px;
+  margin: 9px 10px 3px 10px;
 }
 
 .dijitSliderProgressBar,.dijitSliderBottomBumper, .dijitSliderLeftBumper {
@@ -80,5 +80,9 @@ body > .container {
 
   .geocoder {
     width: 50%;
+  }
+
+  .esriTimeSlider .dijitButton {
+    padding: 0 15%;
   }
 }

@@ -85,8 +85,9 @@ define([
             var tsDiv = dojo.create("div", null, dojo.byId('timeSliderDiv'));
                       
             var timeSlider = new TimeSlider({
-                style: 'width: 100%;',
-                id:'timeSlider'
+                    style: 'width: 100%;',
+                    id:'timeSlider'
+                }, tsDiv);
             this.map.setTimeSlider(timeSlider);
 
               var timeExtent = new TimeExtent();
