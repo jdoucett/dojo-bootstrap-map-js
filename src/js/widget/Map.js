@@ -92,7 +92,7 @@ define([
 
               var timeExtent = new TimeExtent();
               timeExtent.startTime = new Date('4/31/' + timeYear + ' UTC');
-              timeExtent.endTime = new Date('8/31/' + timeYear + 'UTC');
+              timeExtent.endTime = new Date('8/31/' + timeYear + ' UTC');
               console.log ('Start Time ' + timeExtent.startTime);
               timeSlider.setThumbCount(1);
               timeSlider.createTimeStopsByTimeInterval(timeExtent, 1, 'esriTimeUnitsMonths');
