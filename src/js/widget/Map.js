@@ -9,6 +9,8 @@ define([
 
     'esri/map',
     'esri/dijit/Scalebar',
+    'esri/dijit/InfoWindow',
+    'esri/InfoTemplate',    
     'esri/layers/ArcGISDynamicMapServiceLayer',
     'esri/layers/WebTiledLayer',
     'esri/dijit/LocateButton',
@@ -26,13 +28,12 @@ define([
     'dojo/dom-construct'
 ], function(declare, array, dom,
     _WidgetBase, _TemplatedMixin, ContentPane,
-    Map, Scalebar, ArcGISDynamicMapServiceLayer, WebTiledLayer, LocateButton, Geocoder, ImageParameters, Extent, SpatialReference, Legend, TimeSlider, TimeExtent,
+    Map, Scalebar, InfoWindow, InfoTemplate, ArcGISDynamicMapServiceLayer, WebTiledLayer, LocateButton, Geocoder, ImageParameters, Extent, SpatialReference, Legend, TimeSlider, TimeExtent,
     BootstrapMap,
     template,domConstruct) {
 
-    //Default values for drop down lists defined in app.js
-
     var legendDijit;
+    //Default values for drop down lists defined in app.js
     var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];    
     var timeYear = "1993";
     var imageParameters = new ImageParameters();
@@ -43,7 +44,9 @@ define([
         'opacity': .90,
         imageParameters: imageParameters
     });
-    var visibleDataLayerIds = [11];
+    var bottomLayerIds = 1;
+    var fishLayerIds = 11;
+    var visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
     decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
 
     return declare([_WidgetBase, _TemplatedMixin], {
@@ -53,11 +56,17 @@ define([
             this.inherited(arguments);
             this._initMap();
             this.updateFishmap(dateText, fishText, summaryText);
+
+            var infoWindow = new InfoWindow(null, domConstruct.create("div", null, null));
+            infoWindow.startup();
+            this.map.setInfoWindow(infoWindow);
+
+            var template = new InfoTemplate();
+            template.setTitle('State Name');
+            template.setContent('Sub Content');            
         },
 
-
         legendCreate: function() { //add the legend
-            console.log('initializing legend');
             legendDijit = new Legend({
                 map: this.map,
                 layerInfos: [{
@@ -77,7 +86,6 @@ define([
         },
 
         initSlider: function() {
-            console.log('Initializaing time slider');
             
             if (dijit.byId('timeSlider')) {
               dijit.byId('timeSlider').destroy();
@@ -93,7 +101,6 @@ define([
               var timeExtent = new TimeExtent();
               timeExtent.startTime = new Date('4/31/' + timeYear + ' UTC');
               timeExtent.endTime = new Date('8/31/' + timeYear + ' UTC');
-              console.log ('Start Time ' + timeExtent.startTime);
               timeSlider.setThumbCount(1);
               timeSlider.createTimeStopsByTimeInterval(timeExtent, 1, 'esriTimeUnitsMonths');
               timeSlider.setThumbMovingRate(1500);
@@ -108,151 +115,167 @@ define([
         },
 
         setFishmap: function(dateText, fishText, summaryText) {
-            console.log('ran setFishmap' + dateText + ' , ' + fishText + ' , ' + summaryText);
             var map = this.map;
             var l, options;
             if (dateText == '1993 - 2002') {
                 timeYear = '1993';
                 if (fishText == 'Rainbow Trout') {
                     if (summaryText == 'Catch per Trip') {
-                        visibleDataLayerIds = [12];
+                        fishLayerIds = 12;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch per Hour') {
-                        visibleDataLayerIds = [15];
+                        fishLayerIds = 15;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];                        
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch Total') {
-                        visibleDataLayerIds = [18];
+                        fishLayerIds = 18;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else {
-                        console.log('Decade 93 - 02, Rainbow Trout, no CPUE match');
                     }
                 } else if (fishText == 'Lake Trout') {
                     if (summaryText == 'Catch per Trip') {
-                        visibleDataLayerIds = [22];
+                        fishLayerIds = 22;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch per Hour') {
-                        visibleDataLayerIds = [25];
+                        fishLayerIds = 25;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch Total') {
-                        visibleDataLayerIds = [28];
+                        fishLayerIds = 28;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else {
-                        console.log('Decade 93 - 02, Lake Trout, no CPUE match');
                     }
                 } else if (fishText == 'Chinook Salmon') {
                     if (summaryText == 'Catch per Trip') {
-                        visibleDataLayerIds = [32];
+                        fishLayerIds = 32;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch per Hour') {
-                        visibleDataLayerIds = [35];
+                        fishLayerIds = 35;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch Total') {
-                        visibleDataLayerIds = [38];
+                        fishLayerIds = 38;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else {
-                        console.log('Decade 93 - 02, Chinook Salmon, no CPUE match');
                     }
                 } else if (fishText == 'Brown Trout') {
                     if (summaryText == 'Catch per Trip') {
-                        visibleDataLayerIds = [42];
+                        fishLayerIds = 42;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch per Hour') {
-                        visibleDataLayerIds = [45];
+                        fishLayerIds = 45;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch Total') {
-                        visibleDataLayerIds = [48];
+                        fishLayerIds = 48;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else {
-                        console.log('Decade 93 - 02, Brown Trout, no CPUE match');
                     }
                 } else if (fishText == 'Coho Salmon') {
                     if (summaryText == 'Catch per Trip') {
-                        visibleDataLayerIds = [52];
+                        fishLayerIds = 52;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch per Hour') {
-                        visibleDataLayerIds = [55];
+                        fishLayerIds = 55;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch Total') {
-                        visibleDataLayerIds = [58];
+                        fishLayerIds = 58;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else {
-                        console.log('Decade 93 - 02, Coho Salmon, no CPUE match');
                     }
                 } else {
-                    console.log('Decade 93 - 02, no fish match');
                 }
             } else if (dateText == '2003 - 2012') {
                 timeYear = '2003';                
                 if (fishText == 'Rainbow Trout') {
                     if (summaryText == 'Catch per Trip') {
-                        visibleDataLayerIds = [11];
+                        fishLayerIds = 11;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch per Hour') {
-                        visibleDataLayerIds = [14];
+                        fishLayerIds = 14;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch Total') {
-                        visibleDataLayerIds = [17];
+                        fishLayerIds = 17;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else {
-                        console.log('Decade 03 - 12, Rainbow Trout, no CPUE match');
                     }
                 } else if (fishText == 'Lake Trout') {
                     if (summaryText == 'Catch per Trip') {
-                        visibleDataLayerIds = [21];
+                        fishLayerIds = 21;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch per Hour') {
-                        visibleDataLayerIds = [24];
+                        fishLayerIds = 24;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch Total') {
-                        visibleDataLayerIds = [27];
+                        fishLayerIds = 27;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else {
-                        console.log('Decade 03 - 12, Lake Trout, no CPUE match');
                     }
                 } else if (fishText == 'Chinook Salmon') {
                     if (summaryText == 'Catch per Trip') {
-                        visibleDataLayerIds = [31];
+                        fishLayerIds = 31;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch per Hour') {
-                        visibleDataLayerIds = [34];
+                        fishLayerIds = 34;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch Total') {
-                        visibleDataLayerIds = [37];
+                        fishLayerIds = 37;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else {
-                        console.log('Decade 03 - 12, Chinook Salmon, no CPUE match');
                     }
                 } else if (fishText == 'Brown Trout') {
                     if (summaryText == 'Catch per Trip') {
-                        visibleDataLayerIds = [41];
+                        fishLayerIds = 41;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch per Hour') {
-                        visibleDataLayerIds = [44];
+                        fishLayerIds = 44;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch Total') {
-                        visibleDataLayerIds = [47];
+                        fishLayerIds = 47;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else {
-                        console.log('Decade 03 - 12, Brown Trout, no CPUE match');
                     }
                 } else if (fishText == 'Coho Salmon') {
                     if (summaryText == 'Catch per Trip') {
-                        visibleDataLayerIds = [51];
+                        fishLayerIds = 51;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch per Hour') {
-                        visibleDataLayerIds = [54];
+                        fishLayerIds = 54;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else if (summaryText == 'Catch Total') {
-                        visibleDataLayerIds = [57];
+                        fishLayerIds = 57;
+                        visibleDataLayerIds = [fishLayerIds,bottomLayerIds];
                         decadeCatchDataLayer.setVisibleLayers(visibleDataLayerIds);
                     } else {
-                        console.log('Decade 03 - 12, Coho Salmon, no CPUE match');
                     }
                 } else {
-                    console.log('Decade 03 - 12, no fish match');
                 }
             } else {
-                console.log('No Decade Match');
             }
         },
 
@@ -278,21 +301,19 @@ define([
                 imageParameters: imageParameters
             });
 
-            var visibleBaseLayerIds = [2, 3, 4, 5, 66];
+            var visibleBaseLayerIds = [66];
             decadeCatchBaseLayer.setVisibleLayers(visibleBaseLayerIds);
 
             // decadeCatchDataLayer defined as global for use in this function and setFishMap function
-
             this.map.addLayer(decadeCatchDataLayer);        
             this.map.addLayer(decadeCatchBaseLayer);
             this.legendCreate();
+
         },
 
         updateFishmap: function(dateText, fishText, summaryText) {
             this.setFishmap(dateText, fishText, summaryText);
-            console.log('refreshing legend');
             this.legendRefresh();
-            console.log('refreshing time slider');
             this.initSlider();
         },
 

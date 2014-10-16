@@ -2,6 +2,21 @@
 @import url("//js.arcgis.com/3.10/js/esri/css/esri.css");
 @import url("http://js.arcgis.com/3.10/js/dojo/dijit/themes/tundra/tundra.css");
 @import url("../bower_components/bootstrap-map-js/src/css/bootstrapmap.css");
+@media only screen and (max-device-width: 640px) {
+  #timeSliderDiv {
+    width: 96%;
+  }
+
+  html { background: red; }
+  
+  .geocoder {
+    width: 50%;
+  }
+
+  #bottomPanel .dijitButton {
+    padding: 0 20px;
+  }
+}
 
 body {
   padding-top: 50px;
@@ -73,16 +88,4 @@ body > .container {
   height: 40px;  
 }
 
-@media only screen and (max-device-width: 480px) {
-  #timeSliderDiv {
-    width: 100%;
-  }
 
-  .geocoder {
-    width: 50%;
-  }
-
-  .esriTimeSlider .dijitButton {
-    padding: 0 15%;
-  }
-}
